@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { search, toTileFormat } from './api';
 
 class App extends Component {
+  doSearch(searchTerm) {
+    search(searchTerm).then(rawResults => {
+      this.setState({
+        searchResults: toTileFormat(rawResults),
+        rawResults
+      });
+    });
+  }
   render() {
     return (
       <div className="App">
@@ -11,7 +20,8 @@ class App extends Component {
           <h2>Welcome to React</h2>
         </div>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+          <input placeholder="search movie" ref={(inpt) => this.inpt = inpt} />
+          <button onClick={(e) => this.doSearch(this.inpt.value)}>search</button>
         </p>
       </div>
     );
