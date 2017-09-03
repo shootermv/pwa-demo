@@ -7,13 +7,13 @@ const axiosInstance = axios.create({
 
 export const toTileFormat = (raw) =>
   raw.filter(item => item.show.image)
-  .map(item => ({
-    id: item.show.externals.thetvdb,
-    name: item.show.name,
-    desc: item.show.genres.join(', '),
-    summary: item.show.summary,
-    img: (item.show.image || {}).medium,
-  }));
+    .map(item => ({
+      id: item.show.externals.thetvdb,
+      name: item.show.name,
+      desc: item.show.genres.join(', '),
+      summary: item.show.summary,
+      img: (item.show.image || {}).medium,
+    }));
 
 
 export const search = (searchTerm) =>
@@ -26,7 +26,10 @@ export const search = (searchTerm) =>
 
 export const showLookup = (showId) =>
   axiosInstance.get(`lookup/shows?thetvdb=${showId}`)
-    .then(res => res.data);
+    .then(res => {
+      console.log(res.data)
+      return res.data;
+    });
 
 export const showCast = (showId) =>
   axiosInstance.get(`shows/${showId}/cast`)
