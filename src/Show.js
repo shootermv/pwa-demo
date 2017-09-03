@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { showLookup } from './api';
+import { showLookup, showCast } from './api';
 import logo from './logo.svg';
 class Search extends Component {
     constructor(props) {
@@ -9,14 +9,32 @@ class Search extends Component {
     componentDidMount() {
         showLookup(this.props.params.id).then(data => {
             console.log('data loaded:', data)
-            this.setState({ showInfo: data })
+            this.setState({ showInfo: data });
+            showCast(data.id)
+                .then(cast => this.setState({ cast }));
         })
     }
+    renderCast(cast) {
+        return (
+            <div>{cast.map((player, idx) => {
 
+                return <div key={idx}>{player.person.name}</div>
+
+            })}</div>
+        );
+    }
+    renderShow(showInfo, cast) {
+        return (<div>
+            <h1>{showInfo.name}</h1>
+            <div>{showInfo.summary.replace(/(<([^>]+)>)/ig, '')}</div>
+            <img src={showInfo.image.medium} />
+            {this.renderCast(cast)}
+        </div>)
+    }
     render() {
-        const { showInfo } = this.state;
-        console.log('showInfo', showInfo)
-        if (showInfo) return (<div>{showInfo.name}</div>)
+        const { showInfo, cast } = this.state;
+        console.log('cast', cast)
+        if (showInfo && cast) return this.renderShow(showInfo, cast);
         return (<div>loading...</div>)
     }
 
