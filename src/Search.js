@@ -25,7 +25,7 @@ class Search extends Component {
                 <p className="App-intro">
                     <input placeholder="search movie" ref={(inpt) => this.inpt = inpt} />
                     <button onClick={(e) => this.doSearch(this.inpt.value)}>search</button>
-                    {searchResults.map((res, index) => <a href={'#/show/' + res.id} key={index}>{res.name}<img src={res.img} /></a>)}
+                    {searchResults.map((res, index) => <a href={'#/show/' + res.id} key={index}>{res.name}<img title={res.summary && res.summary.replace(/(<([^>]+)>)/ig, '').substr(0, 24) + '...'} src={res.img} /></a>)}
                 </p>
             </div>
         );
